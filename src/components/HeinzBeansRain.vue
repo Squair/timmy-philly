@@ -291,7 +291,13 @@ onUnmounted(() => {
   top: -50px;
   width: 20px;
   height: 30px;
-  animation: fall 4s linear forwards;
+  animation: fall 10s linear forwards;
+  -webkit-animation: fall 10s;
+  -webkit-animation-timing-function: linear;
+  -moz-animation: fall 10s;
+  -moz-animation-timing-function: linear;
+  -o-animation: fall 10s;
+  -o-animation-timing-function: linear;
   z-index: 100;
 }
 
@@ -581,7 +587,7 @@ onUnmounted(() => {
     transform: translateY(0) rotate(var(--rotation-start));
   }
   to {
-    transform: translateY(calc(100vh)) rotate(var(--rotation-end));
+    transform: translateY(100vh) rotate(var(--rotation-end));
   }
 }
 
