@@ -602,12 +602,15 @@ onUnmounted(() => {
 
 /* Animations */
 @keyframes fall {
-  from {
-    transform: translateY(0) rotate(var(--rotation-start));
+  0% {
+    top: -50px;
+    transform: rotate(var(--rotation-start));
   }
-  to {
-    transform: translateY(var(--fall-distance)) rotate(var(--rotation-end));
+  100% {
+    top: var(--fall-distance);
+    transform: rotate(var(--rotation-end));
   }
+
 }
 
 @keyframes rotate {
