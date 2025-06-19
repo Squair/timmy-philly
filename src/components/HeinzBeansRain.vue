@@ -26,7 +26,9 @@
 
         transform: `scale(${bean.scale})`,
         '--rotation-start': bean.rotationStart + 'deg',
-        '--rotation-end': bean.rotationEnd + 'deg'
+        '--rotation-end': bean.rotationEnd + 'deg',
+        '--fall-distance': bean.fallDistance
+
       }"
       @animationend="onBeanLanded(bean)"
     >
@@ -104,6 +106,9 @@ const getAge = computed(() => {
 let rainInterval = null
 let cleanupInterval = null
 
+const windowHeight = window.innerHeight;
+const fallDistance = windowHeight + 50; // Extra buffer if needed
+
 // Create a new falling bean
 const createBean = () => {
   if (!container.value) return
@@ -119,6 +124,7 @@ const createBean = () => {
     variant: Math.floor(Math.random() * 3) + 1, // 3 bean variants
     rotationStart: Math.random() * 360,
     rotationEnd: Math.random() * 360 + 360, // Full rotation plus random
+    fallDistance: `${fallDistance}px`,
   }
 
   fallingBeans.value.push(bean)
@@ -591,7 +597,7 @@ onUnmounted(() => {
     transform: translateY(0) rotate(var(--rotation-start));
   }
   to {
-    transform: translateY(100vh) rotate(var(--rotation-end));
+    transform: translateY(var(--fall-distance)) rotate(var(--rotation-end));
   }
 }
 
