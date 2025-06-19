@@ -19,9 +19,11 @@
       :key="bean.id"
       class="falling-bean"
       :style="{
+        top: '-50px',
         left: bean.startX + 'px',
         animationDuration: bean.duration + 's',
         animationDelay: bean.delay + 's',
+
         transform: `scale(${bean.scale})`,
         '--rotation-start': bean.rotationStart + 'deg',
         '--rotation-end': bean.rotationEnd + 'deg'
@@ -291,7 +293,9 @@ onUnmounted(() => {
   top: -50px;
   width: 20px;
   height: 30px;
-  animation: fall 10s linear forwards;
+  animation-name: fall;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;  
   -webkit-animation: fall 10s;
   -webkit-animation-timing-function: linear;
   -moz-animation: fall 10s;
