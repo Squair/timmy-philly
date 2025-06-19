@@ -1,6 +1,6 @@
 <template>
   <div v-if="timer <= 0">
-    <ConfettiExplosion :stageHeight="1200" :stageWidth="4500" :force="0.3" />
+  <ConfettiExplosion :stageHeight="containerHeight" :stageWidth="containerWidth" />
 
   </div>
   <div class="beans-container" ref="container">
@@ -81,6 +81,8 @@ import ConfettiExplosion from "vue-confetti-explosion";
 
 // Component state
 const container = ref(null)
+const containerWidth = ref(window.innerWidth)
+const containerHeight = ref(window.innerHeight)
 const fallingBeans = ref([])
 const groundBeans = ref([])
 const isRaining = ref(true)
@@ -206,6 +208,13 @@ onMounted(() => {
       startRain()
     }
   }, 11000)
+
+  const updateDimensions = () => {
+    containerWidth.value = window.innerWidth;
+    containerHeight.value = window.innerHeight;
+  };
+  window.addEventListener('resize', updateDimensions);
+  updateDimensions();
 })
 
 onUnmounted(() => {
