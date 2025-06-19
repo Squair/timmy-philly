@@ -265,26 +265,6 @@ onUnmounted(() => {
   color: #FF6B35;
 }
 
-.slider {
-  flex: 1;
-  height: 8px;
-  border-radius: 4px;
-  background: linear-gradient(to right, #FFD23F, #FF6B35);
-  outline: none;
-  cursor: pointer;
-}
-
-.slider::-webkit-slider-thumb {
-  appearance: none;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background: #FFFFFF;
-  cursor: pointer;
-  box-shadow: 0 2px 8px rgba(255, 107, 53, 0.5);
-  border: 2px solid #FF6B35;
-}
-
 .falling-bean {
   position: absolute;
   top: -50px;
@@ -411,6 +391,22 @@ onUnmounted(() => {
   animation: beanSauceDrip 4s ease-in-out infinite;
 }
 
+/* Add new animation for bean sauce drips */
+@keyframes beanSauceDrip {
+  0%, 70% {
+    height: 4px;
+    opacity: 0.7;
+  }
+  85% {
+    height: 10px;
+    opacity: 1;
+  }
+  100% {
+    height: 4px;
+    opacity: 0.7;
+  }
+}
+
 .bean-sauce-coating::after {
   content: '';
   position: absolute;
@@ -525,35 +521,6 @@ onUnmounted(() => {
   font-weight: 700;
 }
 
-.heinz-can {
-  position: absolute;
-  bottom: 20px;
-  left: 20px;
-  width: 80px;
-  height: 120px;
-  z-index: 500;
-}
-
-.can-body {
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(180deg, #FF6B35 0%, #DC2626 100%);
-  border-radius: 8px 8px 12px 12px;
-  position: relative;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-}
-
-.can-label {
-  position: absolute;
-  top: 15px;
-  left: 5px;
-  right: 5px;
-  background: rgba(255, 255, 255, 0.95);
-  border-radius: 6px;
-  padding: 8px 4px;
-  text-align: center;
-}
-
 .heinz-text {
   font-size: 14px;
   font-weight: 900;
@@ -575,12 +542,15 @@ onUnmounted(() => {
 }
 
 /* Animations */
+/* Enhanced animations with mobile optimization */
 @keyframes fall {
-  from {
-    transform: translateY(0) rotate(var(--rotation-start));
+  0% {
+    transform: translate3d(0, -50px, 0) rotate(var(--rotation-start));
+    opacity: 1;
   }
-  to {
-    transform: translateY(calc(100vh + 100px)) rotate(var(--rotation-end));
+  100% {
+    transform: translate3d(0, calc(100vh + 100px), 0) rotate(var(--rotation-end));
+    opacity: 1;
   }
 }
 
@@ -631,6 +601,18 @@ onUnmounted(() => {
   .heinz-can {
     width: 60px;
     height: 90px;
+  }
+
+    .beans-container {
+    transform: translate3d(0, 0, 0);
+    -webkit-transform: translate3d(0, 0, 0);
+  }
+  
+  .falling-bean,
+  .sauce-drop,
+  .ground-bean {
+    transform: translate3d(0, 0, 0);
+    -webkit-transform: translate3d(0, 0, 0);
   }
 }
 </style>
