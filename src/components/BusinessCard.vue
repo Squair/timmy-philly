@@ -1,5 +1,5 @@
 <template>
-  <HeinzBeansRain v-if="beanCount === 5" />
+  <HeinzBeansRainNew v-if="beanCount === 5" />
   <div v-else class="min-h-screen bg-cover bg-[url(/img/background.jpg)] flex items-center justify-center p-4">
     <div class="w-full max-w-4xl bg-white/95 backdrop-blur-sm shadow-2xl rounded-lg overflow-hidden">
       <div class="grid md:grid-cols-2 gap-0">
@@ -161,7 +161,7 @@ import {
   Volume2,
   AudioWaveformIcon,
 } from 'lucide-vue-next'
-import HeinzBeansRain from './HeinzBeansRain.vue'
+import HeinzBeansRainNew from './HeinzBeansRainNew.vue'
 
 const specialties = ref([
   'Rock & Metal',
