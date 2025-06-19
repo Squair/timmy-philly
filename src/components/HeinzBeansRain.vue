@@ -1,9 +1,6 @@
 <template>
   <div v-if="timer <= 0">
-    <ConfettiExplosion :particleCount="200" :stageHeight="1200" :force="0.3" />
-    <ConfettiExplosion :particleCount="200" :stageHeight="1200" :stageWidth="2500":force="0.3" />
-    <ConfettiExplosion :particleCount="200" :stageHeight="1200" :stageWidth="3500":force="0.3" />
-    <ConfettiExplosion :particleCount="200" :stageHeight="1200" :stageWidth="4500" :force="0.3" />
+    <ConfettiExplosion :particleCount="500" :stageHeight="1200" :stageWidth="4500" :force="0.3" />
 
   </div>
   <div class="beans-container" ref="container">
@@ -65,17 +62,6 @@
       <div class="stat">
         <span class="stat-label">Total:</span>
         <span class="stat-value">{{ totalBeans }}</span>
-      </div>
-    </div>
-
-    <!-- Heinz can (decorative) -->
-    <div class="heinz-can">
-      <div class="can-body">
-        <div class="can-label">
-          <div class="heinz-text">HEINZ</div>
-          <div class="beans-text">BAKED BEANS</div>
-          <div class="tagline">in Tomato Sauce</div>
-        </div>
       </div>
     </div>
   </div>
@@ -152,17 +138,6 @@ const onBeanLanded = (bean) => {
     }
     
     groundBeans.value.push(groundBean)
-  }
-}
-
-// Toggle rain on/off
-const toggleRain = () => {
-  isRaining.value = !isRaining.value
-  
-  if (isRaining.value) {
-    startRain()
-  } else {
-    stopRain()
   }
 }
 
