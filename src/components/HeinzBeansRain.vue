@@ -28,7 +28,9 @@
       }"
       @animationend="onBeanLanded(bean)"
     >
-      <div class="bean-shape" :class="`bean-variant-${bean.variant}`"></div>
+      <div class="bean-shape" :class="`bean-variant-${bean.variant}`">
+        <div class="bean-sauce-coating"></div>
+      </div>
     </div>
 
     <!-- Ground beans (accumulated) -->
@@ -43,7 +45,9 @@
         zIndex: groundBean.zIndex
       }"
     >
-      <div class="bean-shape" :class="`bean-variant-${groundBean.variant}`"></div>
+      <div class="bean-shape" :class="`bean-variant-${groundBean.variant}`">
+        <div class="bean-sauce-coating"></div>
+      </div>
     </div>
 
     <!-- Bean counter -->
@@ -119,9 +123,8 @@ const createBean = () => {
   totalBeans.value++
 }
 
-// Handle bean landing
+// Handle bean landing 
 const onBeanLanded = (bean) => {
-  // Remove from falling beans
   const index = fallingBeans.value.findIndex(b => b.id === bean.id)
   if (index !== -1) {
     fallingBeans.value.splice(index, 1)
@@ -129,10 +132,10 @@ const onBeanLanded = (bean) => {
     // Add to ground beans
     const groundBean = {
       id: `ground-${bean.id}`,
-      x: bean.startX + (Math.random() - 0.5) * 30, // Slight horizontal scatter
-      bottom: Math.random() * 15, // Random ground level
+      x: bean.startX + (Math.random() - 0.5) * 30,
+      bottom: Math.random() * 15,
       rotation: Math.random() * 360,
-      scale: bean.scale * (0.9 + Math.random() * 0.2), // Slightly smaller on ground
+      scale: bean.scale * (0.9 + Math.random() * 0.2),
       variant: bean.variant,
       zIndex: Math.floor(Math.random() * 10) + 1
     }
@@ -253,68 +256,7 @@ onUnmounted(() => {
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
 }
 
-.controls {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  z-index: 1000;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  background: rgba(255, 255, 255, 0.95);
-  padding: 20px;
-  border-radius: 15px;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-  backdrop-filter: blur(10px);
-  border: 2px solid #FF6B35;
-}
-
-.control-btn {
-  padding: 12px 24px;
-  border: none;
-  border-radius: 25px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  font-size: 14px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.control-btn.start {
-  background: linear-gradient(45deg, #FF6B35, #F7931E);
-  color: white;
-  box-shadow: 0 4px 15px rgba(255, 107, 53, 0.4);
-}
-
-.control-btn.start:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(255, 107, 53, 0.6);
-}
-
-.control-btn.stop {
-  background: linear-gradient(45deg, #DC2626, #EF4444);
-  color: white;
-  box-shadow: 0 4px 15px rgba(220, 38, 38, 0.4);
-}
-
-.control-btn.stop:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(220, 38, 38, 0.6);
-}
-
-.control-btn.clear {
-  background: linear-gradient(45deg, #6366F1, #8B5CF6);
-  color: white;
-  box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
-}
-
-.control-btn.clear:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(99, 102, 241, 0.6);
-}
-
-.intensity-control {
+.intensity-control, .sauce-toggle {
   display: flex;
   align-items: center;
   gap: 12px;
@@ -344,48 +286,190 @@ onUnmounted(() => {
 }
 
 .falling-bean {
+  display: block;
   position: absolute;
   top: -50px;
   width: 20px;
   height: 30px;
-  animation: fall linear forwards;
+  animation: fall 4s linear forwards;
   z-index: 100;
 }
 
 .bean-shape {
   width: 100%;
   height: 100%;
-  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
   position: relative;
   animation: rotate linear infinite;
   animation-duration: inherit;
+  background: linear-gradient(135deg, #D2B48C 0%, #CD853F 30%, #A0522D 70%, #8B4513 100%);
+  border-radius: 45% 55% 40% 60% / 55% 45% 65% 35%;
   box-shadow: 
-    inset -3px -3px 6px rgba(0, 0, 0, 0.3),
-    inset 2px 2px 4px rgba(255, 255, 255, 0.3),
-    0 4px 8px rgba(0, 0, 0, 0.2);
+    inset -4px -6px 8px rgba(101, 67, 33, 0.4),
+    inset 2px 3px 6px rgba(255, 228, 196, 0.6),
+    0 3px 8px rgba(0, 0, 0, 0.3),
+    0 1px 3px rgba(0, 0, 0, 0.2);
+  transform-origin: center center;
 }
 
-.bean-variant-1 {
-  background: linear-gradient(135deg, #8B4513 0%, #A0522D 50%, #CD853F 100%);
-}
-
-.bean-variant-2 {
-  background: linear-gradient(135deg, #A0522D 0%, #CD853F 50%, #DEB887 100%);
-}
-
-.bean-variant-3 {
-  background: linear-gradient(135deg, #654321 0%, #8B4513 50%, #A0522D 100%);
-}
-
+/* Bean hilum (the "eye" where bean was attached to pod) */
 .bean-shape::before {
   content: '';
   position: absolute;
-  top: 20%;
-  left: 20%;
-  width: 60%;
-  height: 60%;
-  background: radial-gradient(ellipse at 30% 30%, rgba(255, 255, 255, 0.4) 0%, transparent 70%);
+  top: 30%;
+  left: 15%;
+  width: 25%;
+  height: 8%;
+  background: linear-gradient(90deg, rgba(101, 67, 33, 0.8) 0%, rgba(139, 69, 19, 0.6) 100%);
   border-radius: 50%;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.4);
+  transform: rotate(-15deg);
+}
+
+/* Bean surface texture highlight */
+.bean-shape::after {
+  content: '';
+  position: absolute;
+  top: 20%;
+  right: 25%;
+  width: 30%;
+  height: 40%;
+  background: radial-gradient(ellipse at 40% 30%, rgba(255, 228, 196, 0.4) 0%, transparent 60%);
+  border-radius: 60% 40% 50% 50%;
+  transform: rotate(25deg);
+}
+
+/* Different bean variants with realistic baked bean colors */
+.bean-variant-1 {
+  background: linear-gradient(135deg, #DEB887 0%, #D2B48C 25%, #CD853F 50%, #A0522D 75%, #8B4513 100%);
+  border-radius: 42% 58% 38% 62% / 52% 48% 68% 32%;
+}
+
+.bean-variant-1::before {
+  background: linear-gradient(90deg, rgba(139, 69, 19, 0.9) 0%, rgba(160, 82, 45, 0.7) 100%);
+  top: 25%;
+  left: 12%;
+  width: 28%;
+  height: 10%;
+}
+
+.bean-variant-2 {
+  background: linear-gradient(135deg, #F5DEB3 0%, #DEB887 25%, #D2B48C 50%, #CD853F 75%, #A0522D 100%);
+  border-radius: 48% 52% 42% 58% / 58% 42% 62% 38%;
+}
+
+.bean-variant-2::before {
+  background: linear-gradient(90deg, rgba(160, 82, 45, 0.8) 0%, rgba(205, 133, 63, 0.6) 100%);
+  top: 35%;
+  left: 18%;
+  width: 22%;
+  height: 9%;
+  transform: rotate(-20deg);
+}
+
+.bean-variant-3 {
+  background: linear-gradient(135deg, #D2B48C 0%, #BC9A6A 25%, #A0522D 50%, #8B4513 75%, #654321 100%);
+  border-radius: 46% 54% 36% 64% / 54% 46% 66% 34%;
+}
+
+.bean-variant-3::before {
+  background: linear-gradient(90deg, rgba(101, 67, 33, 0.9) 0%, rgba(139, 69, 19, 0.7) 100%);
+  top: 28%;
+  left: 14%;
+  width: 26%;
+  height: 11%;
+  transform: rotate(-10deg);
+}
+
+/* Enhanced sauce coating for more realistic appearance */
+.bean-sauce-coating {
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: 
+    radial-gradient(ellipse at 30% 20%, rgba(220, 38, 38, 0.8) 0%, transparent 40%),
+    radial-gradient(ellipse at 70% 60%, rgba(185, 28, 28, 0.6) 0%, transparent 35%),
+    radial-gradient(ellipse at 20% 80%, rgba(239, 68, 68, 0.7) 0%, transparent 30%),
+    linear-gradient(135deg, rgba(220, 38, 38, 0.4) 0%, rgba(185, 28, 28, 0.5) 50%, rgba(153, 27, 27, 0.6) 100%);
+  border-radius: inherit;
+  animation: sauceGlisten 3s ease-in-out infinite alternate;
+  box-shadow: 
+    0 0 4px rgba(220, 38, 38, 0.6),
+    inset 0 1px 2px rgba(255, 255, 255, 0.2);
+}
+
+/* Add sauce drips on individual beans */
+.bean-sauce-coating::before {
+  content: '';
+  position: absolute;
+  bottom: -3px;
+  left: 20%;
+  width: 4px;
+  height: 8px;
+  background: linear-gradient(180deg, rgba(220, 38, 38, 0.9) 0%, rgba(185, 28, 28, 0.7) 100%);
+  border-radius: 0 0 50% 50%;
+  animation: beanSauceDrip 4s ease-in-out infinite;
+}
+
+.bean-sauce-coating::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  right: 25%;
+  width: 3px;
+  height: 6px;
+  background: linear-gradient(180deg, rgba(185, 28, 28, 0.8) 0%, rgba(153, 27, 27, 0.6) 100%);
+  border-radius: 0 0 50% 50%;
+  animation: beanSauceDrip 5s ease-in-out infinite reverse;
+}
+
+/* Ground beans get slightly different styling to show they've settled */
+.ground-bean .bean-shape {
+  box-shadow: 
+    inset -3px -5px 6px rgba(101, 67, 33, 0.3),
+    inset 2px 2px 4px rgba(255, 228, 196, 0.4),
+    0 2px 6px rgba(0, 0, 0, 0.4),
+    0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.ground-bean .bean-sauce-coating {
+  opacity: 0.9;
+  background: 
+    radial-gradient(ellipse at 40% 30%, rgba(220, 38, 38, 0.6) 0%, transparent 50%),
+    linear-gradient(135deg, rgba(220, 38, 38, 0.3) 0%, rgba(185, 28, 28, 0.4) 100%);
+}
+
+
+/* Enhanced sauce glisten animation */
+@keyframes sauceGlisten {
+  0% {
+    opacity: 0.4;
+    filter: brightness(1);
+  }
+  50% {
+    opacity: 0.7;
+    filter: brightness(1.2);
+  }
+  100% {
+    opacity: 0.5;
+    filter: brightness(1.1);
+  }
+}
+
+/* Add subtle bean texture animation */
+@keyframes beanTexture {
+  0%, 100% {
+    filter: contrast(1) brightness(1);
+  }
+  50% {
+    filter: contrast(1.05) brightness(1.02);
+  }
+}
+
+/* Apply texture animation to beans */
+.bean-shape {
+  animation: rotate linear infinite, beanTexture 6s ease-in-out infinite;
 }
 
 .ground-bean {
@@ -491,12 +575,13 @@ onUnmounted(() => {
   font-weight: 500;
 }
 
+/* Animations */
 @keyframes fall {
   from {
     transform: translateY(0) rotate(var(--rotation-start));
   }
   to {
-    transform: translateY(calc(100vh + 100px)) rotate(var(--rotation-end));
+    transform: translateY(calc(100vh)) rotate(var(--rotation-end));
   }
 }
 
@@ -506,6 +591,27 @@ onUnmounted(() => {
   }
   to {
     transform: rotate(var(--rotation-end));
+  }
+}
+
+@keyframes particleFly {
+  0% {
+    transform: translate(-50%, -50%) rotate(var(--particle-angle)) translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(var(--particle-angle)) translateY(-30px);
+    opacity: 0;
+  }
+}
+
+
+@keyframes sauceGlisten {
+  0% {
+    opacity: 0.3;
+  }
+  100% {
+    opacity: 0.6;
   }
 }
 
