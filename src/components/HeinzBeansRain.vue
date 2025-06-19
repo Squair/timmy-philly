@@ -1,6 +1,6 @@
 <template>
   <div v-if="timer <= 0">
-  <ConfettiExplosion :stageHeight="containerHeight" :stageWidth="containerWidth" />
+  <ConfettiExplosion v-if="eatenBeans.length === getAge" :stageHeight="containerHeight" :stageWidth="containerWidth" />
 
   </div>
   <div class="beans-container" ref="container">
@@ -8,7 +8,7 @@
     <div class="heinz-background">
       <div class="heinz-logo">
         <h1 v-if="timer > 0" class="brand-title">{{ timer }}</h1>
-        <h1 v-else class="brand-title">Happy {{getAge}}th Birthday Timmy!</h1>
+        <h1 v-else-if="eatenBeans.length === getAge" class="brand-title">Happy {{getAge}}th Birthday Timmy!</h1>
       </div>
     </div>
 
@@ -19,37 +19,12 @@
       :key="bean.id"
       class="falling-bean"
       :style="{
-        top: '-50px',
+        top: bean.startY + 'px',
         left: bean.startX + 'px',
-        animationDuration: bean.duration + 's',
-        animationDelay: bean.delay + 's',
-
-        transform: `scale(${bean.scale})`,
-        '--rotation-start': bean.rotationStart + 'deg',
-        '--rotation-end': bean.rotationEnd + 'deg',
-        '--fall-distance': bean.fallDistance
-
       }"
-      @animationend="onBeanLanded(bean)"
+      @click="eatBean(bean.id)"
     >
       <div class="bean-shape" :class="`bean-variant-${bean.variant}`">
-        <div class="bean-sauce-coating"></div>
-      </div>
-    </div>
-
-    <!-- Ground beans (accumulated) -->
-    <div
-      v-for="groundBean in groundBeans"
-      :key="groundBean.id"
-      class="ground-bean"
-      :style="{
-        left: groundBean.x + 'px',
-        bottom: groundBean.bottom + 'px',
-        transform: `rotate(${groundBean.rotation}deg) scale(${groundBean.scale})`,
-        zIndex: groundBean.zIndex
-      }"
-    >
-      <div class="bean-shape" :class="`bean-variant-${groundBean.variant}`">
         <div class="bean-sauce-coating"></div>
       </div>
     </div>
@@ -60,12 +35,12 @@
         <strong>BEANZ COUNT</strong>
       </div>
       <div class="stat">
-        <span class="stat-label">Falling:</span>
+        <span class="stat-label">Ready to eat:</span>
         <span class="stat-value">{{ fallingBeans.length }}</span>
       </div>
       <div class="stat">
-        <span class="stat-label">Landed:</span>
-        <span class="stat-value">{{ groundBeans.length }}</span>
+        <span class="stat-label">Eaten:</span>
+        <span class="stat-value">{{ eatenBeans.length }}</span>
       </div>
       <div class="stat">
         <span class="stat-label">Total:</span>
@@ -84,7 +59,7 @@ const container = ref(null)
 const containerWidth = ref(window.innerWidth)
 const containerHeight = ref(window.innerHeight)
 const fallingBeans = ref([])
-const groundBeans = ref([])
+const eatenBeans = ref([])
 const isRaining = ref(true)
 const intensity = ref(5)
 const beanIdCounter = ref(0)
@@ -103,6 +78,15 @@ const getAge = computed(() => {
   return age;
 });
 
+const eatBean = (id) => {
+  const index = fallingBeans.value.findIndex(bean => bean.id === id)
+  if (index !== -1) {
+    const bean = fallingBeans.value[index]
+    eatenBeans.value.push(bean)
+    fallingBeans.value.splice(index, 1)
+  }
+}
+
 
 // Animation intervals
 let rainInterval = null
@@ -116,42 +100,21 @@ const createBean = () => {
   if (!container.value) return
 
   const containerWidth = container.value.offsetWidth
+  const containerHeight = container.value.offsetHeight
+  console.log(containerHeight);
   
   const bean = {
     id: beanIdCounter.value++,
-    startX: Math.random() * (containerWidth - 40), // Account for bean width
+    startX: Math.random() * (containerWidth - 40) + 20, // Account for bean width
+    startY: Math.random() * (containerHeight - 40) + 20, // Account for bean width
     scale: 0.7 + Math.random() * 0.6, // Random size between 0.7 and 1.3
     duration: 3 + Math.random() * 4, // Fall duration 3-7 seconds
     delay: Math.random() * 0.3, // Random delay up to 0.3s
     variant: Math.floor(Math.random() * 3) + 1, // 3 bean variants
-    rotationStart: Math.random() * 360,
-    rotationEnd: Math.random() * 360 + 360, // Full rotation plus random
-    fallDistance: `${fallDistance}px`,
   }
 
   fallingBeans.value.push(bean)
   totalBeans.value++
-}
-
-// Handle bean landing 
-const onBeanLanded = (bean) => {
-  const index = fallingBeans.value.findIndex(b => b.id === bean.id)
-  if (index !== -1) {
-    fallingBeans.value.splice(index, 1)
-    
-    // Add to ground beans
-    const groundBean = {
-      id: `ground-${bean.id}`,
-      x: bean.startX + (Math.random() - 0.5) * 30,
-      bottom: Math.random() * 15,
-      rotation: Math.random() * 360,
-      scale: bean.scale * (0.9 + Math.random() * 0.2),
-      variant: bean.variant,
-      zIndex: Math.floor(Math.random() * 10) + 1
-    }
-    
-    groundBeans.value.push(groundBean)
-  }
 }
 
 // Start the rain
@@ -162,7 +125,7 @@ const startRain = () => {
     // Create beans based on intensity
     const beansToCreate = getAge.value
     for (let i = 0; i < beansToCreate; i++) {
-      setTimeout(() => createBean(), i * 50) // Slight stagger
+      setTimeout(() => createBean(), i * 1000) // Slight stagger
     }
   }
   createBeans()
@@ -182,23 +145,11 @@ const stopRain = () => {
 // Clear all beans
 const clearBeans = () => {
   fallingBeans.value = []
-  groundBeans.value = []
   totalBeans.value = 0
-}
-
-// Cleanup ground beans periodically
-const startCleanup = () => {
-  cleanupInterval = setInterval(() => {
-    if (groundBeans.value.length > 150) {
-      groundBeans.value = groundBeans.value.slice(-150)
-    }
-  }, 10000)
 }
 
 // Lifecycle hooks
 onMounted(() => {
-  startCleanup()
-
   setInterval(() => {
     timer.value--
   }, 1000)
@@ -229,7 +180,7 @@ onUnmounted(() => {
 .beans-container {
   position: relative;
   width: 100vw;
-  height: 100vh;
+  height: 100dvh;
   overflow: hidden;
   background: linear-gradient(135deg, #FF6B35 0%, #F7931E 50%, #FFD23F 100%);
 }
@@ -273,51 +224,11 @@ onUnmounted(() => {
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
 }
 
-.intensity-control, .sauce-toggle {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  font-size: 14px;
-  font-weight: 600;
-  color: #FF6B35;
-}
-
-.slider {
-  flex: 1;
-  height: 8px;
-  border-radius: 4px;
-  background: linear-gradient(to right, #FFD23F, #FF6B35);
-  outline: none;
-  cursor: pointer;
-}
-
-.slider::-webkit-slider-thumb {
-  appearance: none;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background: #FFFFFF;
-  cursor: pointer;
-  box-shadow: 0 2px 8px rgba(255, 107, 53, 0.5);
-  border: 2px solid #FF6B35;
-}
-
 .falling-bean {
-  display: block;
   position: absolute;
-  top: -50px;
   width: 20px;
   height: 30px;
-  animation-name: fall;
-  animation-timing-function: linear;
-  animation-fill-mode: forwards;  
-  -webkit-animation: fall 10s;
-  -webkit-animation-timing-function: linear;
-  -moz-animation: fall 10s;
-  -moz-animation-timing-function: linear;
-  -o-animation: fall 10s;
-  -o-animation-timing-function: linear;
-  z-index: 100;
+  z-index: 1001;
 }
 
 .bean-shape {
@@ -418,7 +329,6 @@ onUnmounted(() => {
     radial-gradient(ellipse at 20% 80%, rgba(239, 68, 68, 0.7) 0%, transparent 30%),
     linear-gradient(135deg, rgba(220, 38, 38, 0.4) 0%, rgba(185, 28, 28, 0.5) 50%, rgba(153, 27, 27, 0.6) 100%);
   border-radius: inherit;
-  animation: sauceGlisten 3s ease-in-out infinite alternate;
   box-shadow: 
     0 0 4px rgba(220, 38, 38, 0.6),
     inset 0 1px 2px rgba(255, 255, 255, 0.2);
@@ -434,7 +344,6 @@ onUnmounted(() => {
   height: 8px;
   background: linear-gradient(180deg, rgba(220, 38, 38, 0.9) 0%, rgba(185, 28, 28, 0.7) 100%);
   border-radius: 0 0 50% 50%;
-  animation: beanSauceDrip 4s ease-in-out infinite;
 }
 
 .bean-sauce-coating::after {
@@ -446,7 +355,6 @@ onUnmounted(() => {
   height: 6px;
   background: linear-gradient(180deg, rgba(185, 28, 28, 0.8) 0%, rgba(153, 27, 27, 0.6) 100%);
   border-radius: 0 0 50% 50%;
-  animation: beanSauceDrip 5s ease-in-out infinite reverse;
 }
 
 /* Ground beans get slightly different styling to show they've settled */
@@ -463,33 +371,6 @@ onUnmounted(() => {
   background: 
     radial-gradient(ellipse at 40% 30%, rgba(220, 38, 38, 0.6) 0%, transparent 50%),
     linear-gradient(135deg, rgba(220, 38, 38, 0.3) 0%, rgba(185, 28, 28, 0.4) 100%);
-}
-
-
-/* Enhanced sauce glisten animation */
-@keyframes sauceGlisten {
-  0% {
-    opacity: 0.4;
-    filter: brightness(1);
-  }
-  50% {
-    opacity: 0.7;
-    filter: brightness(1.2);
-  }
-  100% {
-    opacity: 0.5;
-    filter: brightness(1.1);
-  }
-}
-
-/* Add subtle bean texture animation */
-@keyframes beanTexture {
-  0%, 100% {
-    filter: contrast(1) brightness(1);
-  }
-  50% {
-    filter: contrast(1.05) brightness(1.02);
-  }
 }
 
 /* Apply texture animation to beans */
@@ -551,35 +432,6 @@ onUnmounted(() => {
   font-weight: 700;
 }
 
-.heinz-can {
-  position: absolute;
-  bottom: 20px;
-  left: 20px;
-  width: 80px;
-  height: 120px;
-  z-index: 500;
-}
-
-.can-body {
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(180deg, #FF6B35 0%, #DC2626 100%);
-  border-radius: 8px 8px 12px 12px;
-  position: relative;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-}
-
-.can-label {
-  position: absolute;
-  top: 15px;
-  left: 5px;
-  right: 5px;
-  background: rgba(255, 255, 255, 0.95);
-  border-radius: 6px;
-  padding: 8px 4px;
-  text-align: center;
-}
-
 .heinz-text {
   font-size: 14px;
   font-weight: 900;
@@ -603,7 +455,7 @@ onUnmounted(() => {
 /* Animations */
 @keyframes fall {
   0% {
-    top: -50px;
+    top: 0px;
     transform: rotate(var(--rotation-start));
   }
   100% {
@@ -653,13 +505,10 @@ onUnmounted(() => {
     font-size: 1.2rem;
   }
   
-  .controls, .stats {
+  .stats {
     padding: 15px;
+    z-index: 1;
   }
-  
-  .heinz-can {
-    width: 60px;
-    height: 90px;
-  }
+
 }
 </style>
