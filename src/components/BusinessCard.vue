@@ -37,9 +37,12 @@
             </p>
 
             <div>
-
-              <p>Live sound engineer / <a href="https://www.instagram.com/vookoo_bristol/?hl=en-gb" class="text-right text-blue-500 cursor-pointer">@vookoo_bristol</a></p>
-              <p>Guitar & Sax / <a href="https://www.instagram.com/miyathesun/?hl=en-gb" class="text-blue-500 cursor-pointer">@miyathesun</a></p>
+              <div class="flex items-center gap-1 text-sm text-slate-700">
+                <component :is="ChevronRight" class="w-4 h-4" /><p class="text-slate-700">Live sound engineer / <a href="https://www.instagram.com/vookoo_bristol/?hl=en-gb" class="text-right text-blue-500 cursor-pointer">@vookoo_bristol</a></p>
+              </div>
+              <div class="flex items-center gap-1 text-sm text-slate-700">
+                <component :is="ChevronRight" class="w-4 h-4" /><p class="text-slate-700">Guitar & Sax / <a href="https://www.instagram.com/miyathesun/?hl=en-gb" class="text-blue-500 cursor-pointer">@miyathesun</a></p>
+              </div>
             </div>
           </div>
 
@@ -197,6 +200,7 @@ import {
   Volume2,
   AudioWaveformIcon,
   MessageCircleHeart,
+  ChevronRight
 } from "lucide-vue-next";
 import HeinzBeansRain from "./HeinzBeansRain.vue";
 
