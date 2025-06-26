@@ -9,15 +9,15 @@
     >
       <div class="grid md:grid-cols-2 gap-0">
         <!-- Left Side - Main Info -->
-        <div class="p-8 md:p-12 space-y-6 flex flex-col gap-8">
+        <div class="p-8 md:p-12 space-y-6 flex flex-col gap-3">
           <div class="space-y-4 flex flex-col gap-5">
-            <div class="flex items-center gap-3">
-              <div>
+            <div class="flex justify-between gap-3">
+              <div class="flex flex-col justify-center">
                 <h1 class="text-3xl font-bold text-slate-900">
                   Timmy Phillips
                 </h1>
                 <p class="text-lg text-slate-600">
-                  Professional Sound Engineer
+                  Professional Live Sound Engineer
                 </p>
               </div>
               <img
@@ -28,10 +28,19 @@
               />
             </div>
 
+          <div class="border-t border-slate-200"></div>
+
+
             <p class="text-slate-700 leading-relaxed">
               Passionate audio professional with 5+ years of experience in
               recording, mixing, and mastering. Specializing in live sound.
             </p>
+
+            <div>
+
+              <p>Live sound engineer / <a href="https://www.instagram.com/vookoo_bristol/?hl=en-gb" class="text-right text-blue-500 cursor-pointer">@vookoo_bristol</a></p>
+              <p>Guitar & Sax / <a href="https://www.instagram.com/miyathesun/?hl=en-gb" class="text-blue-500 cursor-pointer">@miyathesun</a></p>
+            </div>
           </div>
 
           <div class="border-t border-slate-200"></div>
@@ -80,8 +89,8 @@
         </div>
 
         <!-- Right Side - Contact & Social -->
-        <div class="bg-slate-50 p-8 md:p-12 space-y-6 flex flex-col gap-2">
-          <div class="space-y-4">
+        <div class="bg-slate-50 pt-5 md:pt-17 p-8 md:p-12 space-y-6 flex flex-col gap-2">
+          <div class="space-y-4 flex flex-col gap-3">
             <h2 class="text-xl font-semibold text-slate-900">Get In Touch</h2>
 
             <div class="space-y-4">
@@ -133,7 +142,7 @@
 
           <!-- Social Links -->
           <div class="space-y-6 flex flex-col gap-2">
-            <h3 class="font-medium text-slate-900">Connect</h3>
+            <h3 class="font-medium text-slate-900">Connect With Me</h3>
             <div class="flex gap-3">
               <button
                 v-for="social in socialLinks"
@@ -191,7 +200,7 @@ import {
 } from "lucide-vue-next";
 import HeinzBeansRain from "./HeinzBeansRain.vue";
 
-const specialties = ref(["Rock & Metal", "Electronic", "Jazz"]);
+const specialties = ref(["Live sound", "Festivals", "Brass", "Guitar", "Saxophone"]);
 const phoneNumber = ref("+44 7463 818156");
 const phoneNumberSafe = phoneNumber.value.replace(/\D/g, ""); // Remove non-numeric characters
 
