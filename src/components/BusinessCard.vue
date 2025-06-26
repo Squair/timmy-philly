@@ -104,7 +104,7 @@
                 <div>
                   <p class="text-sm text-slate-500">Email</p>
                   <p
-                    class="underline text-blue-500 cursor-pointer"
+                    class="text-blue-500 cursor-pointer"
                     @click="startProject"
                   >
                     timphillips243@gmail.com
@@ -118,7 +118,7 @@
                 <div>
                   <p class="text-sm text-slate-500">Instagram</p>
                   <a href="https://www.instagram.com/_timmyphilly_?igsh=MXc2bWpzMGtsODYwZg=="
-                    class="underline text-blue-500 cursor-pointer"
+                    class="text-blue-500 cursor-pointer"
                   >
                     _timmyphilly_
                   </a>
@@ -131,7 +131,7 @@
                 <div>
                   <p class="text-sm text-slate-500">WhatsApp</p>
                   <a
-                    class="underline text-blue-500 cursor-pointer"
+                    class="text-blue-500 cursor-pointer"
                     :href="getWhatsAppLink()"
                   >
                     {{ phoneNumber }}
@@ -147,7 +147,7 @@
                   <p class="text-sm text-slate-500">Phone</p>
                   <a
                     :href="`tel:+${phoneNumberSafe}`"
-                    class="underline text-blue-500"
+                    class="text-blue-500"
                     >{{ phoneNumber }}</a
                   >
                 </div>
@@ -162,7 +162,7 @@
                 </a>
                 <div>
                   <p class="text-sm text-slate-500">Location</p>
-                  <a href="https://maps.app.goo.gl/7mtxX2iBmLrNE7gK7" class="underline text-blue-500">Bristol, UK</a>
+                  <a href="https://maps.app.goo.gl/7mtxX2iBmLrNE7gK7" class="text-blue-500">Bristol, UK</a>
                 </div>
               </div>
             </div>
