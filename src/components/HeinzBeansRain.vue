@@ -1,6 +1,6 @@
 <template>
   <div v-if="timer <= 0">
-  <ConfettiExplosion v-if="eatenBeans.length === getAge" :stageHeight="containerHeight" :stageWidth="containerWidth" />
+  <ConfettiExplosion  v-if="eatenBeans.length === getAge" :stageHeight="containerHeight" :stageWidth="containerWidth" />
 
   </div>
   <div class="beans-container" ref="container">
@@ -21,6 +21,7 @@
       :style="{
         top: bean.startY + 'px',
         left: bean.startX + 'px',
+        transform: `scale(${bean.scale})`,
       }"
       @click="eatBean(bean.id)"
     >
@@ -66,6 +67,8 @@ const beanIdCounter = ref(0)
 const totalBeans = ref(0)
 
 const timer = ref(10)
+const eatAudio = new Audio('/timmy-philly/sound/eat.mp3')
+const partyAudio = new Audio('/timmy-philly/sound/party.mp3')
 
 const timmyBirthday = new Date('2000-08-23');
 const getAge = computed(() => {
@@ -84,6 +87,11 @@ const eatBean = (id) => {
     const bean = fallingBeans.value[index]
     eatenBeans.value.push(bean)
     fallingBeans.value.splice(index, 1)
+    eatAudio.play();
+
+    if (eatenBeans.value.length === getAge.value) {
+      partyAudio.play();
+    }
   }
 }
 
@@ -101,7 +109,6 @@ const createBean = () => {
 
   const containerWidth = container.value.offsetWidth
   const containerHeight = container.value.offsetHeight
-  console.log(containerHeight);
   
   const bean = {
     id: beanIdCounter.value++,
@@ -229,6 +236,7 @@ onUnmounted(() => {
   width: 20px;
   height: 30px;
   z-index: 1001;
+  animation: spin 2s linear infinite;
 }
 
 .bean-shape {
@@ -245,6 +253,16 @@ onUnmounted(() => {
     0 3px 8px rgba(0, 0, 0, 0.3),
     0 1px 3px rgba(0, 0, 0, 0.2);
   transform-origin: center center;
+}
+
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* Bean hilum (the "eye" where bean was attached to pod) */
