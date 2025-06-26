@@ -67,7 +67,7 @@ const beanIdCounter = ref(0)
 const totalBeans = ref(0)
 
 const timer = ref(10)
-const eatAudio = new Audio('/timmy-philly/sound/eat.mp3')
+const eatAudio = new Audio('/timmy-philly/sound/chomp.wav')
 const partyAudio = new Audio('/timmy-philly/sound/party.mp3')
 
 const timmyBirthday = new Date('2000-08-23');
