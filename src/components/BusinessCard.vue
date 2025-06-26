@@ -13,17 +13,17 @@
           <div class="space-y-4 flex flex-col gap-5">
             <div class="flex justify-between gap-3">
               <div class="flex flex-col justify-center">
-                <h1 class="text-3xl font-bold text-slate-900">
+                <h1 class="text-2xl text-nowrap font-bold text-slate-900">
                   Timmy Phillips
                 </h1>
-                <p class="text-lg text-slate-600">
+                <p class="text-lg  text-slate-600">
                   Professional Live Sound Engineer
                 </p>
               </div>
               <img
                 src="/img/timmy.jpg"
                 alt="Timmy Phillips"
-                class="w-32 h-32 rounded-full object-cover shadow-md"
+                class="w-60 h-40 md:w-50 rounded-full object-cover shadow-md"
                 @click="startGame"
               />
             </div>
