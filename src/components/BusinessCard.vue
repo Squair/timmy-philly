@@ -2,7 +2,7 @@
   <HeinzBeansRain v-if="gameStarted" />
   <div
     v-else
-    class="min-h-screen bg-cover bg-[url(/img/background.jpg)] flex items-center justify-center p-4"
+    class="min-h-screen bg-contain bg-[url(/img/background.png)] flex items-center justify-center p-6"
   >
     <div
       class="w-full max-w-4xl bg-white/95 backdrop-blur-sm shadow-2xl rounded-lg overflow-hidden"
