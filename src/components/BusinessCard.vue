@@ -98,7 +98,7 @@
 
             <div class="space-y-4">
               <div class="flex items-center gap-3 text-slate-700">
-                <div class="p-2 bg-white rounded-lg shadow-sm">
+                <div @click="startProject" class="cursor-pointer p-2 bg-white rounded-lg shadow-sm">
                   <Mail class="w-4 h-4" />
                 </div>
                 <div>
@@ -111,11 +111,38 @@
                   </p>
                 </div>
               </div>
+              <div class="flex items-center gap-3 text-slate-700">
+                <a href="https://www.instagram.com/_timmyphilly_?igsh=MXc2bWpzMGtsODYwZg==" class="p-2 bg-white rounded-lg shadow-sm">
+                  <Instagram class="w-4 h-4" />
+                </a>
+                <div>
+                  <p class="text-sm text-slate-500">Instagram</p>
+                  <a href="https://www.instagram.com/_timmyphilly_?igsh=MXc2bWpzMGtsODYwZg=="
+                    class="underline text-blue-500 cursor-pointer"
+                  >
+                    _timmyphilly_
+                  </a>
+                </div>
+              </div>
+              <div class="flex items-center gap-3 text-slate-700">
+                <a :href="getWhatsAppLink()" class="p-2 bg-white rounded-lg shadow-sm">
+                  <img src="/whatsapp-brands-solid.svg" class="w-4 h-4" />
+                </a>
+                <div>
+                  <p class="text-sm text-slate-500">WhatsApp</p>
+                  <a
+                    class="underline text-blue-500 cursor-pointer"
+                    :href="getWhatsAppLink()"
+                  >
+                    {{ phoneNumber }}
+                  </a>
+                </div>
+              </div>
 
               <div class="flex items-center gap-3 text-slate-700">
-                <div class="p-2 bg-white rounded-lg shadow-sm">
+                <a :href="`tel:+${phoneNumberSafe}`" class="p-2 bg-white rounded-lg shadow-sm">
                   <Phone class="w-4 h-4" />
-                </div>
+                </a>
                 <div>
                   <p class="text-sm text-slate-500">Phone</p>
                   <a
@@ -130,33 +157,18 @@
                 @click="checkBeans()"
                 class="flex items-center gap-3 text-slate-700"
               >
-                <div class="p-2 bg-white rounded-lg shadow-sm">
+                <a href="https://maps.app.goo.gl/7mtxX2iBmLrNE7gK7" class="p-2 bg-white rounded-lg shadow-sm">
                   <MapPin class="w-4 h-4" />
-                </div>
+                </a>
                 <div>
                   <p class="text-sm text-slate-500">Location</p>
-                  <p class="font-medium">Bristol, UK</p>
+                  <a href="https://maps.app.goo.gl/7mtxX2iBmLrNE7gK7" class="underline text-blue-500">Bristol, UK</a>
                 </div>
               </div>
             </div>
           </div>
 
           <div class="border-t border-slate-200"></div>
-
-          <!-- Social Links -->
-          <div class="space-y-6 flex flex-col gap-2">
-            <h3 class="font-medium text-slate-900">Connect With Me</h3>
-            <div class="flex gap-3">
-              <button
-                v-for="social in socialLinks"
-                :key="social.name"
-                @click="openLink(social.url)"
-                class="inline-flex items-center justify-center rounded-full border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-900 shadow-sm hover:bg-slate-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-600 w-10 h-10"
-              >
-                <component :is="social.icon" class="w-4 h-4" />
-              </button>
-            </div>
-          </div>
 
           <!-- Studio Info -->
           <div class="bg-white p-4 rounded-lg shadow-sm">
