@@ -10,14 +10,8 @@
       <div class="grid md:grid-cols-2 gap-0">
         <!-- Left Side - Main Info -->
         <div class="p-8 md:p-12 space-y-6 flex flex-col gap-8">
-          <div class="space-y-4">
+          <div class="space-y-4 flex flex-col gap-5">
             <div class="flex items-center gap-3">
-              <img
-                src="/img/timmy.jpg"
-                alt="Timmy Phillips"
-                class="w-32 h-32 rounded-full object-cover shadow-md"
-                @click="startGame"
-              />
               <div>
                 <h1 class="text-3xl font-bold text-slate-900">
                   Timmy Phillips
@@ -26,6 +20,12 @@
                   Professional Sound Engineer
                 </p>
               </div>
+              <img
+                src="/img/timmy.jpg"
+                alt="Timmy Phillips"
+                class="w-32 h-32 rounded-full object-cover shadow-md"
+                @click="startGame"
+              />
             </div>
 
             <p class="text-slate-700 leading-relaxed">
@@ -91,7 +91,12 @@
                 </div>
                 <div>
                   <p class="text-sm text-slate-500">Email</p>
-                  <p class="underline text-blue-500 cursor-pointer" @click="startProject">timphillips243@gmail.com</p>
+                  <p
+                    class="underline text-blue-500 cursor-pointer"
+                    @click="startProject"
+                  >
+                    timphillips243@gmail.com
+                  </p>
                 </div>
               </div>
 
@@ -101,11 +106,18 @@
                 </div>
                 <div>
                   <p class="text-sm text-slate-500">Phone</p>
-                  <a :href="`tel:+${phoneNumberSafe}`" class="underline text-blue-500">{{ phoneNumber }}</a>
+                  <a
+                    :href="`tel:+${phoneNumberSafe}`"
+                    class="underline text-blue-500"
+                    >{{ phoneNumber }}</a
+                  >
                 </div>
               </div>
 
-              <div @click="checkBeans()" class="flex items-center gap-3 text-slate-700">
+              <div
+                @click="checkBeans()"
+                class="flex items-center gap-3 text-slate-700"
+              >
                 <div class="p-2 bg-white rounded-lg shadow-sm">
                   <MapPin class="w-4 h-4" />
                 </div>
@@ -194,7 +206,7 @@ const socialLinks = ref([
   {
     name: "Instagram",
     icon: Instagram,
-    url: "https://www.instagram.com/timmyphilly?igsh=MXc2bWpzMGtsODYwZg==",
+    url: "https://www.instagram.com/_timmyphilly_?igsh=MXc2bWpzMGtsODYwZg==",
   },
   { name: "WhatsApp", icon: MessageCircleHeart, url: getWhatsAppLink() },
 ]);
@@ -206,14 +218,13 @@ const studioEquipment = ref([
   "Genelec Monitoring",
 ]);
 
-
 const openLink = (url) => {
-  window.open(url, '_blank');
+  window.open(url, "_blank");
 };
 
 const startProject = () => {
   window.location.href =
-  "mailto:timphillips243@gmail.com?subject=New Project Inquiry";
+    "mailto:timphillips243@gmail.com?subject=New Project Inquiry";
 };
 
 const beanCount = ref(0);
@@ -226,8 +237,6 @@ const startGame = () => {
   if (beanCount.value < 10) return;
   gameStarted.value = true;
 };
-
-
 </script>
 
 <style scoped>
